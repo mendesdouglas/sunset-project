@@ -1,12 +1,21 @@
 import { Clients } from "@prisma/client";
 import prisma from '../config/prisma';
 
-export const getAllCustomers = async (): Promise<Clients[]> => {
+export const getAllClients = async (): Promise<Clients[]> => {
     return prisma.clients.findMany();
 }
+
+export const getClientsByEmail = async (email:string): Promise<Clients | null> => {
+    return prisma.clients.findUnique({
+        where: {
+            email,
+        }
+    });
+};
 
 export const createClients = async (data: Omit<Clients, 'id'>): Promise<Clients> => {
     return prisma.clients.create({
         data,
-    })
-}
+    });
+};
+
