@@ -1,4 +1,5 @@
 import {Request, Response } from 'express';
+import { validationResult } from 'express-validator';
 import { createClients, getAllClients, getClientsByEmail } from '../models/clients';
       
 
@@ -13,18 +14,18 @@ export const getClients = async (req: Request, res: Response) => {
     }
   };
 
-
 export const addClient = async ( req: Request, res: Response) => {
+    const errors = validationResult(req);
+       if(!errors.isEmpty()){
+        return res.status(400).json({errors:errors.array()});
+       }
+
     const {name, address, city, state, zip, email, phone } = req.body;
     try {
-        if (!name || !address || !city || !state || !zip || !email) {
-            return res.status(400).json({ error: 'Verificar os campos obrigatórios' });
-        }
-        console.log('add')
         const verifiedEmail  = await VerifyUniqueEmail(email);
-        console.log(verifiedEmail);
+        
         if(verifiedEmail) {
-             throw new Error ('Email inválido ou em uso')
+             throw new Error ('E-mail already registered')
         }else{
             const client = await createClients({name, email, address, city, state, zip, phone});
             res.json(client);
@@ -41,7 +42,7 @@ export const VerifyUniqueEmail = async ( email:string) => {
         return uniqueEmail;
     } catch(err){
         const error = err as Error;
-        throw new Error ("Ocorreu um erro");
+        throw new Error ("An error has occurred");
     }
 }
 
