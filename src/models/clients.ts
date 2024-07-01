@@ -19,3 +19,15 @@ export const createClients = async (data: Omit<Clients, 'id'>): Promise<Clients>
     });
 };
 
+export const updateClient = async (id: number, data:  Partial<Clients>): Promise<Clients | null> => {
+    return prisma.clients.update({
+      where: { id },
+      data,
+    });
+  };
+
+export const deleteClient = async (id: number): Promise<Clients | null> => {
+   return prisma.clients.delete({
+      where: { id },
+   });
+};
