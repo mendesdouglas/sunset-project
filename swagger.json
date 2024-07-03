@@ -1,0 +1,15 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Sunset API",
+        "version": "1.0.0",
+        "description": "Documentação da API"
+    },
+    "host": "localhost:3000",
+    "basePath": "/",
+    "schemes": [
+        "http"
+    ],
+    "paths": {},
+    "definitions": {}
+}
